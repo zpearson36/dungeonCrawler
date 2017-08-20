@@ -53,6 +53,10 @@ class Display:
         for door, pos in room.getDoorList().items():
             self.draw(room.getDoor(door), pos)
 
+        #draw Furniture
+        for obj in room.getObstacles():
+            self.draw(obj.getSprite(), obj.getPos())
+
     def fill(self):
         self._display.fill(self.getBackground())
 

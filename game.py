@@ -10,7 +10,7 @@ class Game:
         self._stop = False
         self._clock = pygame.time.Clock()
         self._player = Player()
-        self._room = Room()
+        self._room = Room(size = self._display.getDimensions())
 
     def start(self):
         pygame.init()
