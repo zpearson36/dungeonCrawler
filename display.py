@@ -1,7 +1,7 @@
 import pygame
 
 class Display:
-    def __init__(self, dimensions = (800, 600), title="Game"):
+    def __init__(self, dimensions = (800, 512), title="Game"):
         self._dimensions = dimensions
         self._title = title
         self._background = (255,255,255)
@@ -48,6 +48,10 @@ class Display:
         for y in range(self._dimensions[0]//32):
             self.draw(room.getWall(), (0, y*32))
             self.draw(room.getWall(), (self._dimensions[0]-32, y*32))
+
+        #draw doors
+        for door, pos in room.getDoorList().items():
+            self.draw(room.getDoor(door), pos)
 
     def fill(self):
         self._display.fill(self.getBackground())
