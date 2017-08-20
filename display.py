@@ -12,6 +12,9 @@ class Display:
     def getHeight(self):
         return self._dimensions[1]
 
+    def getDimensions(self):
+        return self._dimensions
+
     def setDimensions(self, width = None, height = None):
         if width == None:
             width = self.getWidth()
