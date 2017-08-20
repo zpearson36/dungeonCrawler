@@ -32,6 +32,20 @@ class Display:
     def draw(self, sprite, pos = (300, 300)):
         self._display.blit(sprite.getImage(), pos)
 
+    def renderRoom(self, room):
+        #draw floor
+        for x in range(self._dimensions[0]//32):
+            for y in range(self._dimensions[1]//32):
+                self.draw(room.getFloor(), (x*32, y*32))
+
+        #draw wall
+        for x in range(self._dimensions[0]//32):
+            self.draw(room.getWall(), (x*32, 0))
+            self.draw(room.getWall(), (x*32, self._dimensions[1]-32))
+        for y in range(self._dimensions[0]//32):
+            self.draw(room.getWall(), (0, y*32))
+            self.draw(room.getWall(), (self._dimensions[0]-32, y*32))
+
     def fill(self):
         self._display.fill(self.getBackground())
 
