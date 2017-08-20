@@ -1,5 +1,6 @@
 from display import Display
 from sprite import Sprite
+from player import Player
 import pygame
 
 class Game:
@@ -7,7 +8,7 @@ class Game:
         self._display = Display()
         self._stop = False
         self._clock = pygame.time.Clock()
-        self._player = Sprite()
+        self._player = Player()
 
     def start(self):
         pygame.init()
@@ -18,7 +19,7 @@ class Game:
         while not self._stop:
             self.getEvent()
             self._display.fill()
-            self._display.draw(self._player)
+            self._display.draw(self._player.getSprite(), self._player.getPos())
             self._display.update()
             self._clock.tick(60)
 

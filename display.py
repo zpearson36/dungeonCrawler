@@ -29,8 +29,8 @@ class Display:
         self._display = pygame.display.set_mode((self.getWidth(),self.getHeight()))
         pygame.display.set_caption(self._title)
 
-    def draw(self, sprite):
-        self._display.blit(sprite.getImage(), (300, 300))
+    def draw(self, sprite, pos = (300, 300)):
+        self._display.blit(sprite.getImage(), pos)
 
     def fill(self):
         self._display.fill(self.getBackground())
