@@ -25,10 +25,13 @@ class Room:
         self._obstacles = []
         self.setObstacles(3)
 
+    def getSize(self):
+        return self._size
+
     def setObstacles(self, num):
         for x in range(num):
-            thing_x = random.randrange(0, self._size[0]-50)
-            thing_y = random.randrange(0, self._size[1]-50)
+            thing_x = random.randrange(75, self._size[0]-83)
+            thing_y = random.randrange(75, self._size[1]-83)
             self._obstacles.append(Furniture(roomType = self._type, pos=(thing_x, thing_y)))
 
     def getObstacles(self):

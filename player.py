@@ -24,18 +24,58 @@ class Player:
     def getVel(self):
         return self._vel
 
-    def move(self, displaySize):
-        newX = self.getPos()[0]+self.getVel()[0]
-        newY = self.getPos()[1]+self.getVel()[1]
+    def move(self, room):
+        x = self.getPos()[0]+self.getVel()[0]
+        y = self.getPos()[1]+self.getVel()[1]
 
-        if newX > displaySize[0] - self.getSprite().getWidth() - 32:
-            newX = displaySize[0] - self.getSprite().getWidth() - 32
-        elif newX < 32:
-            newX = 32
+        #Room Boundaries
+        if x > room.getSize()[0] - self.getSprite().getWidth() - 32:
+            x = room.getSize()[0] - self.getSprite().getWidth() - 32
+        elif x < 32:
+            x = 32
 
-        if newY > displaySize[1] - self.getSprite().getHeight() - 32:
-            newY = displaySize[1] - self.getSprite().getHeight() - 32
-        elif newY < 32:
-            newY = 32
+        if y > room.getSize()[1] - self.getSprite().getHeight() - 32:
+            y = room.getSize()[1] - self.getSprite().getHeight() - 32
+        elif y < 32:
+            y = 32
 
-        self.setPos((newX, newY))
+        #object collision
+        for obj in room.getObstacles():
+            #upperleft
+            if y <= obj.getPos()[1]+obj.getSize()[1] and y >= obj.getPos()[1] and x <= obj.getPos()[0]+obj.getSize()[0] and x >= obj.getPos()[0]:
+                if self.getVel()[0] != 0:
+                    x = obj.getPos()[0]+obj.getSize()[0] + 1
+                else:
+                    y = obj.getPos()[1]+obj.getSize()[1] + 1
+            #bottomleft
+            elif y+self.getSprite().getHeight() <= obj.getPos()[1]+obj.getSize()[1] and y+self.getSprite().getHeight() >= obj.getPos()[1] and x <= obj.getPos()[0]+obj.getSize()[0] and x >= obj.getPos()[0]:
+                if self.getVel()[0] != 0:
+                    x = obj.getPos()[0]+obj.getSize()[0] + 1
+                else:
+                    y = obj.getPos()[1] - self.getSprite().getHeight() + 1
+            #upperright
+            elif y <= obj.getPos()[1]+obj.getSize()[1] and y >= obj.getPos()[1] and x+self.getSprite().getWidth() <= obj.getPos()[0]+obj.getSize()[0] and x+self.getSprite().getWidth() >= obj.getPos()[0]:
+                if self.getVel()[0] != 0:
+                    x = obj.getPos()[0] - self.getSprite().getWidth() + 1
+                else:
+                    y = obj.getPos()[1] + obj.getSize()[1] + 1
+            #bottomeright
+            elif y+self.getSprite().getHeight() <= obj.getPos()[1]+obj.getSize()[1] and y+self.getSprite().getHeight() >= obj.getPos()[1] and x+self.getSprite().getWidth() <= obj.getPos()[0]+obj.getSize()[0] and x+self.getSprite().getWidth() >= obj.getPos()[0]:
+                if self.getVel()[0] != 0:
+                    x = obj.getPos()[0] - self.getSprite().getWidth() + 1
+                else:
+                    y = obj.getPos()[1] - self.getSprite().getHeight() + 1
+            #topedge
+            elif y <= obj.getPos()[1]+obj.getSize()[1] and y >= obj.getPos()[1] and x+self.getSprite().getWidth() >= obj.getPos()[0]+obj.getSize()[0] and x <= obj.getPos()[0]:
+                y = obj.getPos()[1] + obj.getSize()[1] + 1
+            #bottomedge
+            elif y+self.getSprite().getHeight() <= obj.getPos()[1]+obj.getSize()[1] and y+self.getSprite().getHeight() >= obj.getPos()[1] and x+self.getSprite().getWidth() >= obj.getPos()[0]+obj.getSize()[0] and x <= obj.getPos()[0]:
+                y = obj.getPos()[1] - self.getSprite().getHeight() + 1
+            #leftedge
+            elif y+self.getSprite().getHeight() >= obj.getPos()[1]+obj.getSize()[1] and y <= obj.getPos()[1] and x <= obj.getPos()[0]+obj.getSize()[0] and x >= obj.getPos()[0]:
+                x = obj.getPos()[0] + obj.getSize()[0] + 1
+            #rightedge
+            elif y <= obj.getPos()[1] and y+self.getSprite().getHeight() >= obj.getPos()[1]+obj.getSize()[1] and x+self.getSprite().getWidth() <= obj.getPos()[0]+obj.getSize()[0] and x+self.getSprite().getWidth() >= obj.getPos()[0]:
+                x = obj.getPos()[0] - self.getSprite().getWidth() + 1
+
+        self.setPos((x, y))

@@ -22,7 +22,7 @@ class Game:
             self.getEvent()
             self.getDisplay().fill()
             self.getDisplay().renderRoom(self.getRoom())
-            self._player.move(self.getDisplay().getDimensions())
+            self._player.move(self.getRoom())
             self.getDisplay().draw(self._player.getSprite(), self._player.getPos())
             self.getDisplay().update()
             self._clock.tick(60)
