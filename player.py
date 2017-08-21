@@ -1,10 +1,23 @@
 from sprite import Sprite
+import random
+import threading
 
 class Player:
     def __init__(self, sprite = Sprite(), pos = (300, 300)):
         self._sprite = sprite
         self._pos = pos
         self._vel = (0, 0)
+        self._lock = threading.Lock()
+        self._alive = True
+
+    def isAlive(self):
+        return self._alive
+
+    def kill(self):
+        self._alive = False
+
+    def getLock(self):
+        return self._lock
 
     def getSprite(self):
         return self._sprite

@@ -3,7 +3,9 @@ from sprite import Sprite
 from player import Player
 from room import Room
 import pygame
-
+import threading
+import time
+import random
 class Game:
     def __init__(self):
         self._display = Display()
@@ -11,13 +13,31 @@ class Game:
         self._clock = pygame.time.Clock()
         self._player = Player()
         self._room = Room(size = self._display.getDimensions())
+        self._threads = []
 
     def start(self):
         pygame.init()
         self.getDisplay().initWindow()
         self.run()
 
+    def npcThreads(self, npc):
+        while(npc.isAlive()):
+            npc.getLock().acquire()
+            xVel = random.randrange(-1,2)*5
+            yVel = random.randrange(-1,2)*5
+            npc.setVel((xVel, yVel))
+            npc.move(self.getRoom())
+            npc.getLock().release()
+            #self.getDisplay().draw(npc.getSprite(), npc.getPos())
+            time.sleep(.5)
+
     def run(self):
+        for enemy in self.getRoom().getEnemies():
+            thisThread = threading.Thread(target=self.npcThreads, args=(enemy, ))
+            thisThread.start()
+            self._threads.append(thisThread)
+            time.sleep(.3)
+
         while not self._stop:
             self.getEvent()
             self.getDisplay().fill()
@@ -25,7 +45,9 @@ class Game:
             self._player.move(self.getRoom())
             self.getDisplay().draw(self._player.getSprite(), self._player.getPos())
             for enemy in self.getRoom().getEnemies():
+                enemy.getLock().acquire()
                 self.getDisplay().draw(enemy.getSprite(), enemy.getPos())
+                enemy.getLock().release()
             self.getDisplay().update()
             self._clock.tick(60)
 
@@ -57,5 +79,7 @@ class Game:
         return self._room
 
     def close(self):
+        for enemy in self.getRoom().getEnemies():
+            enemy.kill()
         pygame.quit()
         quit()
