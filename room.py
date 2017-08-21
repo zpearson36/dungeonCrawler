@@ -1,5 +1,6 @@
 import pygame
 import random
+from player import Player
 from furniture import Furniture
 
 class Tile:
@@ -14,7 +15,7 @@ class Tile:
         return self._img
 
 class Room:
-    def __init__(self, roomType = "defaultRoom", size = (800,512)):
+    def __init__(self, roomType = "defaultRoom", size = (800,512), enemies = 2):
         self._size = size
         self._type = roomType
         self._floor = Tile("assets\\tiles\\"+self._type+"\\floor.png")
@@ -23,15 +24,26 @@ class Room:
         self.setDoors()
         self._doors = {'top': (365,0), 'bot': (365,480), 'left':(0, 211), 'right': (768, 211)}
         self._obstacles = []
-        self.setObstacles(3)
+        self.setObstacles(0)
+        self._enemies = []
+        self.setEnemies(enemies)
+
+    def setEnemies(self, num):
+        for x in range(num):
+            thing_x = random.randrange(150, self._size[0]-100)
+            thing_y = random.randrange(150, self._size[1]-100)
+            self._enemies.append(Player(pos=(thing_x, thing_y)))
+
+    def getEnemies(self):
+        return self._enemies
 
     def getSize(self):
         return self._size
 
     def setObstacles(self, num):
         for x in range(num):
-            thing_x = random.randrange(75, self._size[0]-83)
-            thing_y = random.randrange(75, self._size[1]-83)
+            thing_x = random.randrange(150, self._size[0]-100)
+            thing_y = random.randrange(150, self._size[1]-100)
             self._obstacles.append(Furniture(roomType = self._type, pos=(thing_x, thing_y)))
 
     def getObstacles(self):

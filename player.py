@@ -12,6 +12,9 @@ class Player:
     def getPos(self):
         return self._pos
 
+    def getSize(self):
+        return self.getSprite().getSize()
+
     def setPos(self, pos = None):
         if pos == None:
             pos = self.getPos()
@@ -40,7 +43,7 @@ class Player:
             y = 32
 
         #object collision
-        for obj in room.getObstacles():
+        for obj in room.getObstacles()+room.getEnemies():
             #upperleft
             if y <= obj.getPos()[1]+obj.getSize()[1] and y >= obj.getPos()[1] and x <= obj.getPos()[0]+obj.getSize()[0] and x >= obj.getPos()[0]:
                 if self.getVel()[0] != 0:

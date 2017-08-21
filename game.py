@@ -24,6 +24,8 @@ class Game:
             self.getDisplay().renderRoom(self.getRoom())
             self._player.move(self.getRoom())
             self.getDisplay().draw(self._player.getSprite(), self._player.getPos())
+            for enemy in self.getRoom().getEnemies():
+                self.getDisplay().draw(enemy.getSprite(), enemy.getPos())
             self.getDisplay().update()
             self._clock.tick(60)
 
