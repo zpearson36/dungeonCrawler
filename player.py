@@ -1,14 +1,19 @@
 from sprite import Sprite
 import random
 import threading
+from utils import UID
 
 class Player:
     def __init__(self, sprite = Sprite(), pos = (300, 300)):
+        self._UID = UID.uid()
         self._sprite = sprite
         self._pos = pos
         self._vel = (0, 0)
         self._lock = threading.Lock()
         self._alive = True
+
+    def getUID(self):
+        return self._UID
 
     def isAlive(self):
         return self._alive
@@ -41,6 +46,7 @@ class Player:
         return self._vel
 
     def move(self, room):
+        before = (self.getPos()[0],self.getPos()[1])
         x = self.getPos()[0]+self.getVel()[0]
         y = self.getPos()[1]+self.getVel()[1]
 
@@ -57,6 +63,8 @@ class Player:
 
         #object collision
         for obj in room.getObstacles()+room.getEnemies():
+            if obj.getUID() == self.getUID():
+                continue
             #upperleft
             if y <= obj.getPos()[1]+obj.getSize()[1] and y >= obj.getPos()[1] and x <= obj.getPos()[0]+obj.getSize()[0] and x >= obj.getPos()[0]:
                 if self.getVel()[0] != 0:

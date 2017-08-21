@@ -1,7 +1,7 @@
 import pygame
 
 class Sprite:
-    def __init__(self, img ="assets\\sprites\\player.png", size=(70,90)):
+    def __init__(self, img ="assets/sprites/player.png", size=(70,90)):
         self._image = pygame.image.load(img)
         self._size = size
 

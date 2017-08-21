@@ -23,8 +23,8 @@ class Game:
     def npcThreads(self, npc):
         while(npc.isAlive()):
             npc.getLock().acquire()
-            xVel = random.randrange(-1,2)*5
-            yVel = random.randrange(-1,2)*5
+            xVel = random.randrange(-1,2)*npc.getSize()[0]/2
+            yVel = random.randrange(-1,2)*npc.getSize()[1]/2
             npc.setVel((xVel, yVel))
             npc.move(self.getRoom())
             npc.getLock().release()

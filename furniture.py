@@ -1,9 +1,14 @@
 from sprite import Sprite
+from utils import UID
 
 class Furniture:
     def __init__(self, roomType = "defaultRoon", img = "altar.png", size = (50,50), pos = (32,32)):
-        self._sprite = Sprite("assets\\tiles\\"+roomType+"\\"+img, size)
+        self._UID = UID.uid()
+        self._sprite = Sprite("assets/tiles/"+roomType+"/"+img, size)
         self._pos = pos
+
+    def getUID(self):
+        return self._UID
 
     def getPos(self):
         return self._pos
