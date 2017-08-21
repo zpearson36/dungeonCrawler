@@ -24,7 +24,7 @@ class Room:
         self.setDoors()
         self._doors = {'top': (365,0), 'bot': (365,480), 'left':(0, 211), 'right': (768, 211)}
         self._obstacles = []
-        self.setObstacles(0)
+        self.setObstacles(4)
         self._enemies = []
         self.setEnemies(enemies)
 
