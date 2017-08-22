@@ -71,18 +71,24 @@ class Game:
                 self._stop = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                        self._player.setVel((-5, 0))
+                    self._player.setVel((-5, 0))
                 elif event.key == pygame.K_RIGHT:
-                        self._player.setVel((5, 0))
+                    self._player.setVel((5, 0))
                 elif event.key == pygame.K_UP:
-                        self._player.setVel((0, -5))
+                    self._player.setVel((0, -5))
                 elif event.key == pygame.K_DOWN:
-                        self._player.setVel((0, 5))
+                    self._player.setVel((0, 5))
+                elif event.key == pygame.K_SPACE:
+                    aThread = threading.Thread(target = self.getPlayer().attack, args=(self.getDisplay(),))
+                    aThread.start()
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     self._player.setVel((0, 0))
                 elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     self._player.setVel((0, 0))
+
+    def getPlayer(self):
+        return self._player
 
     def getDisplay(self):
         return self._display

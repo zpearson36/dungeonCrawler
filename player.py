@@ -4,6 +4,7 @@ import random
 import threading
 from utils import UID
 import utils
+import time
 
 class Player:
     def __init__(self, pos = (300, 300)):
@@ -15,6 +16,14 @@ class Player:
         self._alive = True
         self._direction = "down"
         self._walkCycle = 1
+
+    def attack(self, display):
+        size = {"down":(88,52), "up":(88,52), "left":(52,88), "right":(52,88)}
+        direction = {"down":(-15, self.getSize()[1]), "up":(-15,-1*size[self.getDirection()][1]), "left":(-1*size[self.getDirection()][0],-15), "right":(self.getSize()[0],-15)}
+        slash = Sprite(img = "slash_"+self.getDirection()+".png", imgLoc = "assets/effects/", size = size[self.getDirection()])
+        start = time.time()
+        while time.time() - start < .1:
+            display.draw(slash, (self.getPos()[0]+direction[self.getDirection()][0],self.getPos()[1]+direction[self.getDirection()][1]))
 
     def getCycle(self):
         self._walkCycle += 1
