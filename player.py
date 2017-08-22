@@ -6,9 +6,9 @@ from utils import UID
 import utils
 
 class Player:
-    def __init__(self, sprite = Sprite(), pos = (300, 300)):
+    def __init__(self, pos = (300, 300)):
         self._UID = UID.uid()
-        self._sprite = sprite
+        self._sprite = Sprite()
         self._pos = pos
         self._vel = (0, 0)
         self._lock = threading.Lock()
@@ -21,6 +21,12 @@ class Player:
         if self._walkCycle >= 30:
             self._walkCycle = 0
         return self._walkCycle//10
+
+    def setDirection(self, direction):
+        self._direction = direction
+
+    def getDirection(self):
+        return self._direction
 
     def getUID(self):
         return self._UID
@@ -60,15 +66,16 @@ class Player:
         x = self.getPos()[0]+self.getVel()[0]
         y = self.getPos()[1]+self.getVel()[1]
 
-        img = {(0,1): "down",(0,-1): "up",(1,0): "right",(-1,0): "left",(0,0): self._direction}
-        self._direction = img[utils.reduceTuple(self.getVel())]
+        img = {(0,1): "down",(0,-1): "up",(1,0): "right",(-1,0): "left"}
+        if self.getVel() != (0,0):
+            self.setDirection(img[utils.reduceTuple(self.getVel())])
 
         if self.getVel() == (0,0):
             cycle = "1"
         else:
             cycle = str(self.getCycle())
 
-        self.getSprite().setImgName("player_"+img[utils.reduceTuple(self.getVel())]+"_"+cycle+".png")
+        self.getSprite().setImgName("player_"+self.getDirection()+"_"+cycle+".png")
         self.getSprite().loadImg()
 
         for door, portal in dungeon.getDoorList().items():

@@ -30,7 +30,7 @@ class Room:
         self._obstacles = []
         self.setObstacles(random.randrange(0, 5))
         self._enemies = []
-        self.setEnemies(1)
+        self.setEnemies(random.randrange(0, 4))
 
     def setEnemies(self, num):
         for x in range(num):
