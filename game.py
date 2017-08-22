@@ -42,7 +42,9 @@ class Game:
             self.getEvent()
             self.getDisplay().fill()
             self.getDisplay().renderRoom(self.getRoom())
-            self._player.move(self.getRoom())
+            nextRoom = self._player.move(self.getRoom())
+            if nextRoom != None:
+                self.setRoom(nextRoom)
             self.getDisplay().draw(self._player.getSprite(), self._player.getPos())
             for enemy in self.getRoom().getEnemies():
                 enemy.getLock().acquire()
@@ -77,6 +79,9 @@ class Game:
 
     def getRoom(self):
         return self._room
+
+    def setRoom(self, room):
+        self._room = room
 
     def close(self):
         for enemy in self.getRoom().getEnemies():

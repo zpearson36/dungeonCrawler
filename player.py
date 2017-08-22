@@ -50,6 +50,31 @@ class Player:
         x = self.getPos()[0]+self.getVel()[0]
         y = self.getPos()[1]+self.getVel()[1]
 
+        for door, portal in room.getDoorList().items():
+            if y <= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y >= room.getDoor(door).getPos()[1] and x <= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x >= room.getDoor(door).getPos()[0]:
+                print(door)
+            #bottomleft
+            elif y+self.getSprite().getHeight() <= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y+self.getSprite().getHeight() >= room.getDoor(door).getPos()[1] and x <= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x >= room.getDoor(door).getPos()[0]:
+                print(door)
+            #upperright
+            elif y <= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y >= room.getDoor(door).getPos()[1] and x+self.getSprite().getWidth() <= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x+self.getSprite().getWidth() >= room.getDoor(door).getPos()[0]:
+                print(door)
+            #bottomeright
+            elif y+self.getSprite().getHeight() <= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y+self.getSprite().getHeight() >= room.getDoor(door).getPos()[1] and x+self.getSprite().getWidth() <= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x+self.getSprite().getWidth() >= room.getDoor(door).getPos()[0]:
+                print(door)
+            #topedge
+            elif y <= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y >= room.getDoor(door).getPos()[1] and x+self.getSprite().getWidth() >= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x <= room.getDoor(door).getPos()[0]:
+                print(door)
+            #bottomedge
+            elif y+self.getSprite().getHeight() <= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y+self.getSprite().getHeight() >= room.getDoor(door).getPos()[1] and x+self.getSprite().getWidth() >= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x <= room.getDoor(door).getPos()[0]:
+                print(door)
+            #leftedge
+            elif y+self.getSprite().getHeight() >= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y <= room.getDoor(door).getPos()[1] and x <= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x >= room.getDoor(door).getPos()[0]:
+                print(door)
+            #rightedge
+            elif y <= room.getDoor(door).getPos()[1] and y+self.getSprite().getHeight() >= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and x+self.getSprite().getWidth() <= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x+self.getSprite().getWidth() >= room.getDoor(door).getPos()[0]:
+                print(door)
+
         #Room Boundaries
         if x > room.getSize()[0] - self.getSprite().getWidth() - 32:
             x = room.getSize()[0] - self.getSprite().getWidth() - 32
@@ -103,3 +128,4 @@ class Player:
                 x = obj.getPos()[0] - self.getSprite().getWidth() + 1
 
         self.setPos((x, y))
+        return None
