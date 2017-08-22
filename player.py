@@ -3,6 +3,7 @@ import room
 import random
 import threading
 from utils import UID
+import utils
 
 class Player:
     def __init__(self, sprite = Sprite(), pos = (300, 300)):
@@ -12,6 +13,14 @@ class Player:
         self._vel = (0, 0)
         self._lock = threading.Lock()
         self._alive = True
+        self._direction = "down"
+        self._walkCycle = 1
+
+    def getCycle(self):
+        self._walkCycle += 1
+        if self._walkCycle >= 30:
+            self._walkCycle = 0
+        return self._walkCycle//10
 
     def getUID(self):
         return self._UID
@@ -47,9 +56,20 @@ class Player:
         return self._vel
 
     def move(self, dungeon):
-        before = (self.getPos()[0],self.getPos()[1])
+
         x = self.getPos()[0]+self.getVel()[0]
         y = self.getPos()[1]+self.getVel()[1]
+
+        img = {(0,1): "down",(0,-1): "up",(1,0): "right",(-1,0): "left",(0,0): self._direction}
+        self._direction = img[utils.reduceTuple(self.getVel())]
+
+        if self.getVel() == (0,0):
+            cycle = "1"
+        else:
+            cycle = str(self.getCycle())
+
+        self.getSprite().setImgName("player_"+img[utils.reduceTuple(self.getVel())]+"_"+cycle+".png")
+        self.getSprite().loadImg()
 
         for door, portal in dungeon.getDoorList().items():
             #upperleft

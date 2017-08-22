@@ -4,7 +4,7 @@ from utils import UID
 class Furniture:
     def __init__(self, roomType = "defaultRoon", img = "altar.png", size = (50,50), pos = (32,32)):
         self._UID = UID.uid()
-        self._sprite = Sprite("assets/tiles/"+roomType+"/"+img, size)
+        self._sprite = Sprite(imgLoc ="assets/tiles/"+roomType+"/", img = img, size = size)
         self._pos = pos
 
     def getUID(self):
