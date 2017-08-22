@@ -51,7 +51,7 @@ class Display:
 
         #draw doors
         for door, pos in room.getDoorList().items():
-            self.draw(room.getDoor(door), pos)
+            self.draw(room.getDoor(door), room.getDoor(door).getPos())
 
         #draw Furniture
         for obj in room.getObstacles():

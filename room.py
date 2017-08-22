@@ -1,6 +1,6 @@
 import pygame
 import random
-from player import Player
+import player
 from furniture import Furniture
 
 class Tile:
@@ -26,17 +26,17 @@ class Room:
         self._wall = Tile("assets/tiles/"+self._type+"/wall.png")
         self._door = {}
         self.setDoors()
-        self._doors = {'top': (365,0), 'bot': (365,480), 'left':(0, 211), 'right': (768, 211)}
+        self._doors = {'top': (365,385), 'bot': (365,35), 'left':(690, 208), 'right': (35, 211)}
         self._obstacles = []
-        self.setObstacles(0)
+        self.setObstacles(random.randrange(0, 5))
         self._enemies = []
-        self.setEnemies(0)
+        self.setEnemies(random.randrange(0, 3))
 
     def setEnemies(self, num):
         for x in range(num):
             thing_x = random.randrange(150, self._size[0]-100)
             thing_y = random.randrange(150, self._size[1]-100)
-            self._enemies.append(Player(pos=(thing_x, thing_y)))
+            self._enemies.append(player.Player(pos=(thing_x, thing_y)))
 
     def getEnemies(self):
         return self._enemies

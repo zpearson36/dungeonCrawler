@@ -18,7 +18,19 @@ class Game:
     def start(self):
         pygame.init()
         self.getDisplay().initWindow()
+        self.loadRoom()
         self.run()
+
+    def loadRoom(self):
+        for enemy in self.getRoom().getEnemies():
+            thisThread = threading.Thread(target=self.npcThreads, args=(enemy, ))
+            thisThread.start()
+            self._threads.append(thisThread)
+            time.sleep(.3)
+
+    def unloadRoom(self):
+        for enemy in self.getRoom().getEnemies():
+            enemy.kill()
 
     def npcThreads(self, npc):
         while(npc.isAlive()):
@@ -32,19 +44,15 @@ class Game:
             time.sleep(.5)
 
     def run(self):
-        for enemy in self.getRoom().getEnemies():
-            thisThread = threading.Thread(target=self.npcThreads, args=(enemy, ))
-            thisThread.start()
-            self._threads.append(thisThread)
-            time.sleep(.3)
-
         while not self._stop:
             self.getEvent()
             self.getDisplay().fill()
             self.getDisplay().renderRoom(self.getRoom())
             nextRoom = self._player.move(self.getRoom())
             if nextRoom != None:
+                self.unloadRoom()
                 self.setRoom(nextRoom)
+                self.loadRoom()
             self.getDisplay().draw(self._player.getSprite(), self._player.getPos())
             for enemy in self.getRoom().getEnemies():
                 enemy.getLock().acquire()
@@ -84,7 +92,6 @@ class Game:
         self._room = room
 
     def close(self):
-        for enemy in self.getRoom().getEnemies():
-            enemy.kill()
+        self.unloadRoom()
         pygame.quit()
         quit()

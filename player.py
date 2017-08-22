@@ -1,4 +1,5 @@
 from sprite import Sprite
+import room
 import random
 import threading
 from utils import UID
@@ -45,49 +46,58 @@ class Player:
     def getVel(self):
         return self._vel
 
-    def move(self, room):
+    def move(self, dungeon):
         before = (self.getPos()[0],self.getPos()[1])
         x = self.getPos()[0]+self.getVel()[0]
         y = self.getPos()[1]+self.getVel()[1]
 
-        for door, portal in room.getDoorList().items():
-            if y <= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y >= room.getDoor(door).getPos()[1] and x <= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x >= room.getDoor(door).getPos()[0]:
-                print(door)
+        for door, portal in dungeon.getDoorList().items():
+            #upperleft
+            if y <= dungeon.getDoor(door).getPos()[1]+dungeon.getDoor(door).getSize()[1] and y >= dungeon.getDoor(door).getPos()[1] and x <= dungeon.getDoor(door).getPos()[0]+dungeon.getDoor(door).getSize()[0] and x >= dungeon.getDoor(door).getPos()[0]:
+                self.setPos(portal)
+                return room.Room()
             #bottomleft
-            elif y+self.getSprite().getHeight() <= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y+self.getSprite().getHeight() >= room.getDoor(door).getPos()[1] and x <= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x >= room.getDoor(door).getPos()[0]:
-                print(door)
+            elif y+self.getSprite().getHeight() <= dungeon.getDoor(door).getPos()[1]+dungeon.getDoor(door).getSize()[1] and y+self.getSprite().getHeight() >= dungeon.getDoor(door).getPos()[1] and x <= dungeon.getDoor(door).getPos()[0]+dungeon.getDoor(door).getSize()[0] and x >= dungeon.getDoor(door).getPos()[0]:
+                self.setPos(portal)
+                return room.Room()
             #upperright
-            elif y <= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y >= room.getDoor(door).getPos()[1] and x+self.getSprite().getWidth() <= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x+self.getSprite().getWidth() >= room.getDoor(door).getPos()[0]:
-                print(door)
+            elif y <= dungeon.getDoor(door).getPos()[1]+dungeon.getDoor(door).getSize()[1] and y >= dungeon.getDoor(door).getPos()[1] and x+self.getSprite().getWidth() <= dungeon.getDoor(door).getPos()[0]+dungeon.getDoor(door).getSize()[0] and x+self.getSprite().getWidth() >= dungeon.getDoor(door).getPos()[0]:
+                self.setPos(portal)
+                return room.Room()
             #bottomeright
-            elif y+self.getSprite().getHeight() <= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y+self.getSprite().getHeight() >= room.getDoor(door).getPos()[1] and x+self.getSprite().getWidth() <= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x+self.getSprite().getWidth() >= room.getDoor(door).getPos()[0]:
-                print(door)
+            elif y+self.getSprite().getHeight() <= dungeon.getDoor(door).getPos()[1]+dungeon.getDoor(door).getSize()[1] and y+self.getSprite().getHeight() >= dungeon.getDoor(door).getPos()[1] and x+self.getSprite().getWidth() <= dungeon.getDoor(door).getPos()[0]+dungeon.getDoor(door).getSize()[0] and x+self.getSprite().getWidth() >= dungeon.getDoor(door).getPos()[0]:
+                self.setPos(portal)
+                return room.Room()
             #topedge
-            elif y <= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y >= room.getDoor(door).getPos()[1] and x+self.getSprite().getWidth() >= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x <= room.getDoor(door).getPos()[0]:
-                print(door)
+            elif y <= dungeon.getDoor(door).getPos()[1]+dungeon.getDoor(door).getSize()[1] and y >= dungeon.getDoor(door).getPos()[1] and x+self.getSprite().getWidth() >= dungeon.getDoor(door).getPos()[0]+dungeon.getDoor(door).getSize()[0] and x <= dungeon.getDoor(door).getPos()[0]:
+                self.setPos(portal)
+                return room.Room()
             #bottomedge
-            elif y+self.getSprite().getHeight() <= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y+self.getSprite().getHeight() >= room.getDoor(door).getPos()[1] and x+self.getSprite().getWidth() >= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x <= room.getDoor(door).getPos()[0]:
-                print(door)
+            elif y+self.getSprite().getHeight() <= dungeon.getDoor(door).getPos()[1]+dungeon.getDoor(door).getSize()[1] and y+self.getSprite().getHeight() >= dungeon.getDoor(door).getPos()[1] and x+self.getSprite().getWidth() >= dungeon.getDoor(door).getPos()[0]+dungeon.getDoor(door).getSize()[0] and x <= dungeon.getDoor(door).getPos()[0]:
+                self.setPos(portal)
+                return room.Room()
             #leftedge
-            elif y+self.getSprite().getHeight() >= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and y <= room.getDoor(door).getPos()[1] and x <= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x >= room.getDoor(door).getPos()[0]:
-                print(door)
+            elif y+self.getSprite().getHeight() >= dungeon.getDoor(door).getPos()[1]+dungeon.getDoor(door).getSize()[1] and y <= dungeon.getDoor(door).getPos()[1] and x <= dungeon.getDoor(door).getPos()[0]+dungeon.getDoor(door).getSize()[0] and x >= dungeon.getDoor(door).getPos()[0]:
+                self.setPos(portal)
+                return room.Room()
             #rightedge
-            elif y <= room.getDoor(door).getPos()[1] and y+self.getSprite().getHeight() >= room.getDoor(door).getPos()[1]+room.getDoor(door).getSize()[1] and x+self.getSprite().getWidth() <= room.getDoor(door).getPos()[0]+room.getDoor(door).getSize()[0] and x+self.getSprite().getWidth() >= room.getDoor(door).getPos()[0]:
-                print(door)
+            elif y <= dungeon.getDoor(door).getPos()[1] and y+self.getSprite().getHeight() >= dungeon.getDoor(door).getPos()[1]+dungeon.getDoor(door).getSize()[1] and x+self.getSprite().getWidth() <= dungeon.getDoor(door).getPos()[0]+dungeon.getDoor(door).getSize()[0] and x+self.getSprite().getWidth() >= dungeon.getDoor(door).getPos()[0]:
+                self.setPos(portal)
+                return room.Room()
 
         #Room Boundaries
-        if x > room.getSize()[0] - self.getSprite().getWidth() - 32:
-            x = room.getSize()[0] - self.getSprite().getWidth() - 32
+        if x > dungeon.getSize()[0] - self.getSprite().getWidth() - 32:
+            x = dungeon.getSize()[0] - self.getSprite().getWidth() - 32
         elif x < 32:
             x = 32
 
-        if y > room.getSize()[1] - self.getSprite().getHeight() - 32:
-            y = room.getSize()[1] - self.getSprite().getHeight() - 32
+        if y > dungeon.getSize()[1] - self.getSprite().getHeight() - 32:
+            y = dungeon.getSize()[1] - self.getSprite().getHeight() - 32
         elif y < 32:
             y = 32
 
         #object collision
-        for obj in room.getObstacles()+room.getEnemies():
+        for obj in dungeon.getObstacles()+dungeon.getEnemies():
             if obj.getUID() == self.getUID():
                 continue
             #upperleft
